@@ -3,7 +3,8 @@
 public class CameraController : MonoBehaviour
 {
     public GameObject player;
-    public Vector2 cameraSpeedCoefficients = new Vector2(0.5f, 0.5f);
+    public Vector2 cameraSmoothCoefficients = new Vector2(0.05f, 0.05f);
+    public Vector2 window = new Vector2(0.1f, 0.1f);
 
     private Vector3 offset;
 
@@ -12,6 +13,8 @@ public class CameraController : MonoBehaviour
     private PlayerController playerController;
     private Rigidbody2D playerRigidBody;
     private Rigidbody2D cameraRigidBody;
+
+    private Vector2 cameraVelocity = Vector2.zero;
 
     private void Awake()
     {
@@ -26,24 +29,15 @@ public class CameraController : MonoBehaviour
         offset = transform.position - player.transform.position;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if(transform.position != player.transform.position)
-        {
-            cameraRigidBody.velocity = cameraSpeedCoefficients * playerRigidBody.velocity;
-        }
-        else
-        {
-            cameraRigidBody.velocity = Vector2.zero;
-        }
+        float posX = Mathf.SmoothDamp(transform.position.x, player.transform.position.x, ref cameraVelocity.x, cameraSmoothCoefficients.x);
+        float posY = Mathf.SmoothDamp(transform.position.y, player.transform.position.y, ref cameraVelocity.y, cameraSmoothCoefficients.y);
+
+        transform.position = new Vector3(posX, posY, transform.position.z);
     }
 
     private void LateUpdate()
     {
-        //if(shouldCameraChangePosition)
-        //{
-        //    transform.position = player.transform.position + offset;
-        //    shouldCameraChangePosition = false;
-        //}
     }
 }
