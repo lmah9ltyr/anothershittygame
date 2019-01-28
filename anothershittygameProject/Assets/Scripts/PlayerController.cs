@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
             if (value != isGrounded)
             {
                 isGrounded = value;
-                Debug.Log($"IsGround now {value}");
+                //Debug.Log($"IsGround now {value}");
                 if (value)
                 {
                     isDownForceSetted = false;
