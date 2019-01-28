@@ -2,13 +2,13 @@
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer background;
+    [SerializeField]
+    private SpriteRenderer background;
 
+    public float smooth = 2.5f;
     private Transform player;
     private Camera cam;
     private Vector3 min, max, direction;
-    private Vector2 cameraVelocity = Vector2.zero;
-    private float smooth = 2.5f;
 
     private void Awake()
     {
@@ -30,9 +30,6 @@ public class CameraFollow : MonoBehaviour
         position.z = transform.position.z;
         position = MoveInside(position, new Vector3(min.x, min.y, position.z), new Vector3(max.x, max.y, position.z));
         transform.position = Vector3.Lerp(transform.position, position, smooth * Time.deltaTime);
-
-        /*float posX = Mathf.SmoothDamp(transform.position.x, player.position.x, ref cameraVelocity.x, smooth);
-        transform.position = new Vector3(posX, 1f, transform.position.z);*/
     }
 
     private Vector3 MoveInside(Vector3 current, Vector3 pMin, Vector3 pMax)
